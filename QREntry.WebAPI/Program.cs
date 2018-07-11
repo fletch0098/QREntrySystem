@@ -51,16 +51,7 @@ namespace QREntry.WebAPI
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
 
-                //Microsoft Logging Providor
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                    logging.AddAzureWebAppDiagnostics();
-                    logging.AddDebug();
-                })
-                // NLog: setup NLog for Dependency injection
-                .UseNLog()
+                .UseStartup<Startup>()
 
                 //Appsetting
                 .ConfigureAppConfiguration((webHostBuilderContext, configurationbuilder) =>
@@ -74,7 +65,17 @@ namespace QREntry.WebAPI
                     configurationbuilder.AddEnvironmentVariables();
                 })
 
-                .UseStartup<Startup>()
+                //Microsoft Logging Providor
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    logging.AddAzureWebAppDiagnostics();
+                    logging.AddDebug();
+                })
+
+                // NLog: setup NLog for Dependency injection
+                .UseNLog()
 
                 .Build();
     }
