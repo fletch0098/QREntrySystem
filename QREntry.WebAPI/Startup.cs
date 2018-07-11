@@ -13,7 +13,9 @@ using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
 using QREntry.DataAccess;
-using QREntry.Library.Helpers;
+using QREntry.DataAccess.RepositoryManager;
+using QREntry.Library.Model;
+
 
 namespace QREntry.WebAPI
 {
@@ -32,14 +34,15 @@ namespace QREntry.WebAPI
             // Add framework services.
 
             //EF DB
-            //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //b => b.MigrationsAssembly("QREntry.DataAccess")));
+            services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly("QREntry.DataAccess")));
 
             //In-Memory
-            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
+            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
 
             //DI
-            //services.AddSingleton(typeof(IDataRepository<Computer, long>), typeof(ComputerManager));
+            services.AddSingleton(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
+            services.AddTransient(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
             //services.AddTransient(typeof(IDataRepository<Computer, long>), typeof(ComputerManager));
             //services.AddSingleton(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));
             //services.AddTransient(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));

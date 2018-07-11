@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using QREntry.Library;
+using QREntry.Library.Model;
 
 namespace QREntry.DataAccess
 {
@@ -19,10 +19,11 @@ namespace QREntry.DataAccess
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Computer>().ToTable("Computer");
-            //modelBuilder.Entity<Memory>().ToTable("Memory");
+            modelBuilder.Entity<ControlledEntry>().ToTable("ControlledEntries");
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<ControlledEntry> ControlledEntries { get; set; }
 
     }
 }
