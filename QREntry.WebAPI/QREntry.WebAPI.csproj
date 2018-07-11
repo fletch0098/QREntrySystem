@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QREntry.DataAccess\QREntry.DataAccess.csproj" />
     <ProjectReference Include="..\QREntry.Library\QREntry.Library.csproj" />
   </ItemGroup>
 

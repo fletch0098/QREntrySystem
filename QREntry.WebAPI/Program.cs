@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 using QREntry.Library.Helpers;
+using QREntry.DataAccess;
 
 namespace QREntry.WebAPI
 {
@@ -32,11 +33,11 @@ namespace QREntry.WebAPI
                 //Seed DB
                 try
                 {
-                    //var context = services.GetRequiredService<ComputerContext>();
+                    var context = services.GetRequiredService<MyAppContext>();
 
-                    //var dbInitializer = services.GetRequiredService<DbInitializer>();
+                    var dbInitializer = services.GetRequiredService<DbInitializer>();
 
-                    //dbInitializer.Initialize(context);
+                    dbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
+using QREntry.DataAccess;
 using QREntry.Library.Helpers;
 
 namespace QREntry.WebAPI
@@ -31,11 +32,11 @@ namespace QREntry.WebAPI
             // Add framework services.
 
             //EF DB
-            //services.AddDbContext<ComputerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //b => b.MigrationsAssembly("ComputerWebAPI")));
+            //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //b => b.MigrationsAssembly("QREntry.DataAccess")));
 
             //In-Memory
-            //services.AddDbContext<TicTactoeDbContext>(opt => opt.UseInMemoryDatabase("TicTactoeDb"));
+            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
 
             //DI
             //services.AddSingleton(typeof(IDataRepository<Computer, long>), typeof(ComputerManager));
@@ -43,7 +44,7 @@ namespace QREntry.WebAPI
             //services.AddSingleton(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));
             //services.AddTransient(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));
             //services.AddTransient<ComputerManager>();
-            //services.AddTransient<DbInitializer>();
+            services.AddTransient<DbInitializer>();
             //services.AddTransient<LogHelper>();
 
             //CORS
