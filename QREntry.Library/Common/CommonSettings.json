@@ -2,6 +2,7 @@
   "MySettings": {
     "CommonSettings": "Hi, I'm common setting. Anyone can use me.",
     "AppName": "QR Entry System",
-    "Version": "1.0"
+    "Version": "1.0",
+    "WebAPIAddress": "http://localhost:50446/"
   }
 }  
