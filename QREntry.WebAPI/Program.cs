@@ -46,8 +46,8 @@ namespace QREntry.WebAPI
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
 
+                //Microsoft Logging Providor
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
@@ -55,8 +55,21 @@ namespace QREntry.WebAPI
                     logging.AddAzureWebAppDiagnostics();
                     logging.AddDebug();
                 })
+                // NLog: setup NLog for Dependency injection
+                .UseNLog()
 
-                .UseNLog()  // NLog: setup NLog for Dependency injection
+                .ConfigureAppConfiguration((webHostBuilderContext, configurationbuilder) =>
+                {
+                    var environment = webHostBuilderContext.HostingEnvironment;
+                    string pathOfCommonSettingsFile = Path.Combine(environment.ContentRootPath, "..", @"QREntry.Library\Common");
+                    configurationbuilder
+                            .AddJsonFile("appSettings.json", optional: true)
+                            .AddJsonFile(Path.Combine(pathOfCommonSettingsFile, "CommonSettings.json"), optional: true);
+
+                    configurationbuilder.AddEnvironmentVariables();
+                })
+
+                .UseStartup<Startup>()
 
                 .Build();
     }

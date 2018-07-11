@@ -33,6 +33,9 @@ namespace QREntry.WebAPI
             //services.AddDbContext<ComputerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             //b => b.MigrationsAssembly("ComputerWebAPI")));
 
+            //In-Memory
+            //services.AddDbContext<TicTactoeDbContext>(opt => opt.UseInMemoryDatabase("TicTactoeDb"));
+
             //DI
             //services.AddSingleton(typeof(IDataRepository<Computer, long>), typeof(ComputerManager));
             //services.AddTransient(typeof(IDataRepository<Computer, long>), typeof(ComputerManager));
@@ -46,7 +49,7 @@ namespace QREntry.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("LocalDev",
-                    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });
 
             //JSON LOOPS
@@ -63,7 +66,7 @@ namespace QREntry.WebAPI
             //Swagger API
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "QR Entry System API", Version = "v1.0" });
+                c.SwaggerDoc("v1", new Info { Title = Configuration.GetSection("MySettings")["AppName"] + " API ", Version = Configuration.GetSection("MySettings")["Version"] });
             });
         }
 
@@ -84,7 +87,7 @@ namespace QREntry.WebAPI
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "QR Entry System API V1.0");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", Configuration.GetSection("MySettings")["AppName"] + " API " + Configuration.GetSection("MySettings")["Version"]);
             });
 
             app.UseMvc(routes =>
@@ -93,7 +96,7 @@ namespace QREntry.WebAPI
                 routes.MapRoute(
                 name: "default",
                 template: "{controller}/{action}/{id?}",
-                defaults: new { controller = "swagger", action = "Index" });
+                defaults: new { controller = "default", action = "Index" });
             });
 
             //Configure Log
