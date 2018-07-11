@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
+using QREntry.Library.Helpers;
+using QREntry.DataAccess;
 
 namespace QREntry.WebAPI
 {
@@ -23,17 +25,19 @@ namespace QREntry.WebAPI
             {
                 var services = scope.ServiceProvider;
 
+                //Get Logging service
                 var logger = services.GetRequiredService<ILogger<Program>>();
 
                 logger.LogInformation("Application Start");
 
+                //Seed DB
                 try
                 {
-                    //var context = services.GetRequiredService<ComputerContext>();
+                    var context = services.GetRequiredService<MyAppContext>();
 
-                    //var dbInitializer = services.GetRequiredService<DbInitializer>();
+                    var dbInitializer = services.GetRequiredService<DbInitializer>();
 
-                    //dbInitializer.Initialize(context);
+                    dbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
@@ -47,17 +51,9 @@ namespace QREntry.WebAPI
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
 
-                //Microsoft Logging Providor
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                    logging.AddAzureWebAppDiagnostics();
-                    logging.AddDebug();
-                })
-                // NLog: setup NLog for Dependency injection
-                .UseNLog()
+                .UseStartup<Startup>()
 
+                //Appsetting
                 .ConfigureAppConfiguration((webHostBuilderContext, configurationbuilder) =>
                 {
                     var environment = webHostBuilderContext.HostingEnvironment;
@@ -69,7 +65,17 @@ namespace QREntry.WebAPI
                     configurationbuilder.AddEnvironmentVariables();
                 })
 
-                .UseStartup<Startup>()
+                //Microsoft Logging Providor
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    logging.AddAzureWebAppDiagnostics();
+                    logging.AddDebug();
+                })
+
+                // NLog: setup NLog for Dependency injection
+                .UseNLog()
 
                 .Build();
     }
