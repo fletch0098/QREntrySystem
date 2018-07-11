@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
+using QREntry.Library.Helpers;
 
 namespace QREntry.WebAPI
 {
@@ -23,10 +24,12 @@ namespace QREntry.WebAPI
             {
                 var services = scope.ServiceProvider;
 
+                //Get Logging service
                 var logger = services.GetRequiredService<ILogger<Program>>();
 
                 logger.LogInformation("Application Start");
 
+                //Seed DB
                 try
                 {
                     //var context = services.GetRequiredService<ComputerContext>();
@@ -58,6 +61,7 @@ namespace QREntry.WebAPI
                 // NLog: setup NLog for Dependency injection
                 .UseNLog()
 
+                //Appsetting
                 .ConfigureAppConfiguration((webHostBuilderContext, configurationbuilder) =>
                 {
                     var environment = webHostBuilderContext.HostingEnvironment;

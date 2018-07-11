@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
+using QREntry.Library.Helpers;
 
 namespace QREntry.WebAPI
 {
@@ -43,7 +44,7 @@ namespace QREntry.WebAPI
             //services.AddTransient(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));
             //services.AddTransient<ComputerManager>();
             //services.AddTransient<DbInitializer>();
-            //services.AddTransient<ComputerLibrary.Business_Logic.ComputerBAL>();
+            //services.AddTransient<LogHelper>();
 
             //CORS
             services.AddCors(options =>
