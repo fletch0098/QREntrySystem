@@ -1,6 +1,6 @@
-# QRAccess
+# QR Entry System
 
-Repo for QR access
+QR Entry system. .Net Core 2.1 API
 
 ## Getting Started
 

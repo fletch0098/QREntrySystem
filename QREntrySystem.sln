@@ -5,7 +5,15 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QREntry.WebAPI", "QREntry.WebAPI\QREntry.WebAPI.csproj", "{699DBA4E-6681-4180-BF3D-384F38191922}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QREntry.Library", "QREntry.Library\QREntry.Library.csproj", "{A83098B3-48FB-44A2-9696-521ADAADF236}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QREntry.Library", "QREntry.Library\QREntry.Library.csproj", "{A83098B3-48FB-44A2-9696-521ADAADF236}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F0868DE5-CF84-4FF6-9D90-FF54B27720A6}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		QREntry.Diagram.xml = QREntry.Diagram.xml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
