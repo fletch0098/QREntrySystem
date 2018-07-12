@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Update="Common\CommonSettings.json">
       <TransformOnBuild>true</TransformOnBuild>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

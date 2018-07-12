@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
 using QREntry.DataAccess;
 using QREntry.DataAccess.RepositoryManager;
 using QREntry.Library.Model;
-
 
 namespace QREntry.WebAPI
 {
@@ -31,24 +26,19 @@ namespace QREntry.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            //Add framework services.
 
             //EF DB
             //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             //b => b.MigrationsAssembly("QREntry.DataAccess")));
 
-            //In-Memory
-            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
+            //EF In-Memory
+            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
 
             //DI
             services.AddSingleton(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
             services.AddTransient(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
-            //services.AddTransient(typeof(IDataRepository<Computer, long>), typeof(ComputerManager));
-            //services.AddSingleton(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));
-            //services.AddTransient(typeof(IDataRepository<Memory, long>), typeof(MemoryManager));
-            //services.AddTransient<ComputerManager>();
             services.AddTransient<DbInitializer>();
-            //services.AddTransient<LogHelper>();
 
             //CORS
             services.AddCors(options =>
@@ -57,8 +47,11 @@ namespace QREntry.WebAPI
                     policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });
 
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             //JSON LOOPS
-            services.AddMvc().AddJsonOptions(options => {
+            services.AddMvc().AddJsonOptions(options =>
+            {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
@@ -76,21 +69,18 @@ namespace QREntry.WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //DEV Setting
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
-
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {
@@ -112,6 +102,7 @@ namespace QREntry.WebAPI
 
             //Configure Log
             env.ConfigureNLog("nlog.config");
+
         }
     }
 }
