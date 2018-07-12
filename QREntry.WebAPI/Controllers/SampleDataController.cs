@@ -18,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QREntry.WebAPI.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
