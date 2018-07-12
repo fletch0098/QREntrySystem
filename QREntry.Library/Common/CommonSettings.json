@@ -1,7 +1,6 @@
 {
   "Constants": {
-    "CommonSettings": "Hi, I'm common setting. Anyone can use me.",
-    "AppName": "QR Entry System",
+    "AppTitle": "QR Entry System",
     "Version": "1.0"
   }
 }  

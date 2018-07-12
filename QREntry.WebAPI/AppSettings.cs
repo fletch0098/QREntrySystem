@@ -8,6 +8,7 @@ namespace QREntry.WebAPI
     public class AppSettings
     {
         public string enviroment { get; set; }
+        public string appName { get; set; }
         public string url { get; set; }
     }
 }

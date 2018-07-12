@@ -7,8 +7,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using QREntry.Library.Common;
 
+using System.Security.Claims;
+
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+
+using Microsoft.EntityFrameworkCore;
+
 namespace QREntry.WebAPI.Controllers
-{ 
+{
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
