@@ -34,8 +34,8 @@ namespace QREntry.WebAPI
             // Add framework services.
 
             //EF DB
-            services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            b => b.MigrationsAssembly("QREntry.DataAccess")));
+            //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //b => b.MigrationsAssembly("QREntry.DataAccess")));
 
             //In-Memory
             //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
@@ -83,6 +83,21 @@ namespace QREntry.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
 
             //SWAGGER
             app.UseSwagger(c =>
@@ -93,15 +108,6 @@ namespace QREntry.WebAPI
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", Configuration.GetSection("MySettings")["AppName"] + " API " + Configuration.GetSection("MySettings")["Version"]);
-            });
-
-            app.UseMvc(routes =>
-            {
-                //TODO: Needed?
-                routes.MapRoute(
-                name: "default",
-                template: "{controller}/{action}/{id?}",
-                defaults: new { controller = "default", action = "Index" });
             });
 
             //Configure Log
