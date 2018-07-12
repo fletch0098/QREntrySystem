@@ -5,13 +5,22 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+      this.state = { appSetting: null, forecasts: [], loading: true };
 
-      fetch('http://localhost:50446/api/SampleData/WeatherForecasts')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ forecasts: data, loading: false });
-      });
+      fetch('api/appSetting/GetAppSettings')
+          .then(response => response.json())
+          .then(data => {
+              this.setState({ appSetting: data });
+
+              fetch(this.state.appSetting.apiUrl + '/api/SampleData/WeatherForecasts')
+                  .then(response => response.json())
+                  .then(data => {
+                      this.setState({ forecasts: data, loading: false });
+                  });
+
+          });
+
+      
   }
 
   static renderForecastsTable(forecasts) {

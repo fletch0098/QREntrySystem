@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using QREntry.DataAccess;
 using QREntry.DataAccess.RepositoryManager;
 using QREntry.Library.Model;
+using QREntry.Library.Common;
 
 namespace QREntry.WebAPI
 {
@@ -39,6 +40,13 @@ namespace QREntry.WebAPI
             services.AddSingleton(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
             services.AddTransient(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
             services.AddTransient<DbInitializer>();
+
+
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
+
+            var constants = Configuration.GetSection("Constants");
+            services.Configure<Constants>(constants);
 
             //CORS
             services.AddCors(options =>
