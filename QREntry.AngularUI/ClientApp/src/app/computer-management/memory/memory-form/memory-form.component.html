@@ -1,0 +1,59 @@
+<div *ngIf="model">
+
+
+
+    <h1>Memory Detail</h1>
+
+    <form (ngSubmit)="onSubmit()" #memoryForm="ngForm">
+
+      <!--{{diagnostic}}-->
+      <div class="form-group">
+
+        <label for="memoryId">Id</label>
+        <input type="text" placeholder="Id" class="form-control" id="memoryId"
+               [(ngModel)]="model.memoryId" name="memoryId" readonly>
+
+      </div>
+
+      <div class="form-group">
+        <label for="brand">Brand</label>
+        <input type="text" placeholder="My Brand" class="form-control" id="brand" required
+               [(ngModel)]="model.brand" name="brand">
+        <!--<div [hidden]="configuracionName.valid || configuracionName.pristine"
+         class="alert alert-danger">
+      configuracionName is required
+    </div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="sizeGb">Size (GB)</label>
+        <input type="text" placeholder="8" class="form-control" id="sizeGb" required
+               [(ngModel)]="model.sizeGb" name="sizeGb">
+        <!--<div [hidden]="processor.valid || processor.pristine"
+         class="alert alert-danger">
+      processor is required
+    </div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="speed">Speed</label>
+        <input type="text" placeholder="DDR3 1000 GHz" class="form-control" id="speed" required
+               [(ngModel)]="model.speed" name="speed">
+        <!--<div [hidden]="hardDrive.valid || hardDrive.pristine"
+         class="alert alert-danger">
+      hardDrive is required
+    </div>-->
+      </div>
+      <div class="form-group">
+        <label for="lastModified">Last Modified</label>
+        <input type="text" placeholder="Last Modified" class="form-control" id="lastModified"
+               [(ngModel)]="model.lastModified" name="lastModified" readonly>
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!memoryForm.form.valid">Save</button>
+      <button type="button" class="btn btn-danger" (click)="goBack()">Cancel</button>
+
+    </form>
+
+  </div>
+

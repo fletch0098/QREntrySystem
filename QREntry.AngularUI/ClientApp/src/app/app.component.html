@@ -1,10 +1,29 @@
-<div class='container-fluid'>
+<!--<div class='container-fluid'>
   <div class='row'>
     <div class='col-sm-3'>
       <app-nav-menu></app-nav-menu>
     </div>
-    <div class='col-sm-9 body-content'>
-      <router-outlet></router-outlet>
-    </div>
+    <div class="content-wrapper">
+      <div class='col-sm-9 body-content'>
+        <router-outlet></router-outlet>
+
+      </div>
+    </div>-->
+<!--<app-footer></app-footer>-->
+<!--</div>
+</div>-->
+
+<div class="content-wrapper">
+  <app-nav-menu></app-nav-menu>
+  <div class="container">
+    <router-outlet></router-outlet>
   </div>
 </div>
+
+  <!--<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Library</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+  </nav>-->

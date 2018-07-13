@@ -1,0 +1,76 @@
+<div *ngIf="model">
+
+
+
+    <h1>Computer Detail</h1>
+
+    <form (ngSubmit)="onSubmit()" #computerForm="ngForm">
+
+      <!--{{diagnostic}}-->
+      <!--<div><label for="computerId">Id: </label> <span>{{model.computerId}}</span></div>
+  <div> <label for="lastModified: ">Last Modified:</label> <span>Last Modified: {{model.lastModified | date:"yyyy-MM-dd HH:mm:ss"}}</span></div>-->
+
+      <div class="form-group">
+
+        <label for="computerId">Id</label>
+        <input type="text" placeholder="Id" class="form-control" id="computerId" 
+               [(ngModel)]="model.computerId" name="computerId" readonly>
+
+      </div>
+
+
+      <div class="form-group">
+        <label for="configuracionName">Configuracion Name</label>
+        <input type="text" placeholder="My Computer" class="form-control" id="configuracionName" required
+               [(ngModel)]="model.configuracionName" name="configuracionName">
+        <!--<div [hidden]="configuracionName.valid || configuracionName.pristine"
+         class="alert alert-danger">
+      configuracionName is required
+    </div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="processor">Processor</label>
+        <input type="text" placeholder="Very fast" class="form-control" id="processor" required
+               [(ngModel)]="model.processor" name="processor">
+        <!--<div [hidden]="processor.valid || processor.pristine"
+         class="alert alert-danger">
+      processor is required
+    </div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="hardDrive">Hard Drive</label>
+        <input type="text" placeholder="Very big" class="form-control" id="hardDrive" required
+               [(ngModel)]="model.hardDrive" name="hardDrive">
+        <!--<div [hidden]="hardDrive.valid || hardDrive.pristine"
+         class="alert alert-danger">
+      hardDrive is required
+    </div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="memory">Memory</label>
+        <select class="form-control" id="memory"
+                required min="1"
+                [(ngModel)]="model.memoryId" name="memory">
+          <option [ngValue]="memory.memoryId" *ngFor="let memory of memoryList">{{memory.brand}} : {{memory.sizeGb}}GB {{memory.speed}}</option>
+        </select>
+        <!--<div [hidden]="memoryId.valid || memoryId.pristine"
+         class="alert alert-danger">
+      memory is required
+    </div>-->
+      </div>
+      <div class="form-group">
+        <label for="lastModified">Last Modified</label>
+        <input type="text" placeholder="Last Modified" class="form-control" id="lastModified"
+               [(ngModel)]="model.lastModified" name="lastModified" readonly>
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!computerForm.form.valid">Save</button>
+      <button type="button" class="btn btn-danger" (click)="goBack()">Cancel</button>
+
+    </form>
+
+  </div>
+

@@ -1,0 +1,17 @@
+<div *ngIf="messageService.messages.length">
+
+  <h2>Messages</h2>
+  <button class="clear"
+          (click)="messageService.clear()">
+    clear
+  </button>
+  <div *ngFor='let message of messageService.messages'>
+    <div class="alert alert-{{message.messageType}}">
+      
+      <strong>{{message.messageType}}!</strong> {{message.messageText}}<button class="close" data-dismiss="alert" aria-label="close" (click)="delete(message)">
+  <!--<span class='glyphicon glyphicon-remove'></span>-->&times;
+</button>
+    </div>
+    
+</div>
+  </div>
