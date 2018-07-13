@@ -7,9 +7,6 @@ namespace QREntry.Library.Common
 {
     public class Constants
     {
-        public string AppTitle { get; set; }
-        public string Version { get; set; }
-
         public static class JwtClaimIdentifiers
         {
             public const string Rol = "rol", Id = "id";

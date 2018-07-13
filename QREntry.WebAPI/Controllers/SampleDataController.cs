@@ -21,13 +21,9 @@ namespace QREntry.WebAPI.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private readonly AppSettings _appSettings;
-        private readonly Constants _constants;
-
-        public SampleDataController(IOptions<AppSettings> appSettings, IOptions<Constants> constants)
+        public SampleDataController()
         {
-            _appSettings = appSettings.Value;
-            _constants = constants.Value;
+            
         }
 
         private static string[] Summaries = new[]
@@ -45,20 +41,6 @@ namespace QREntry.WebAPI.Controllers
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
-        }
-
-        [HttpGet("[action]")]
-        public ActionResult<AppSettings> AppSettings()
-        {
-
-            return _appSettings;
-        }
-
-        [HttpGet("[action]")]
-        public ActionResult<Constants> Constants()
-        {
-
-            return _constants;
         }
 
         public class WeatherForecast
