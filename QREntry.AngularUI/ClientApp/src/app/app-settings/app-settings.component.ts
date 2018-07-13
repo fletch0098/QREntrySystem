@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class AppSettingsComponent {
 
-  private appSetting: appSetting;
+  appSetting: appSetting;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<appSetting>(baseUrl + 'api/appSetting/getAppSettings').subscribe(result => {

@@ -54,7 +54,7 @@ namespace QREntry.WebAPI
             b => b.MigrationsAssembly("QREntry.DataAccess")));
 
             //EF In-Memory
-            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
+            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
 
             //DI
             services.AddSingleton(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));

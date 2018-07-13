@@ -58,9 +58,11 @@ namespace QREntry.WebAPI
                 {
                     var environment = webHostBuilderContext.HostingEnvironment;
                     string pathOfCommonSettingsFile = Path.Combine(environment.ContentRootPath, "..", @"QREntry.Library\Common");
+                    string pathOfProdCommonSettingsFile = Path.Combine(environment.ContentRootPath, "..", @"Common");
                     configurationbuilder
                             .AddJsonFile("appSettings.json", optional: true)
                             .AddJsonFile(Path.Combine(pathOfCommonSettingsFile, "CommonSettings.json"), optional: true)
+                            .AddJsonFile(Path.Combine(pathOfProdCommonSettingsFile, "CommonSettings.json"), optional: true)
                             .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
 
                     configurationbuilder.AddEnvironmentVariables();
