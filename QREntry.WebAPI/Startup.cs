@@ -14,7 +14,7 @@ using QREntry.Library.Model;
 using QREntry.Library.Common;
 using QREntry.Library.Helpers;
 using QREntry.WebAPI.Extensions;
-
+using Microsoft.Extensions.Options;
 using QREntry.WebAPI.Authentication;
 using System.Net;
 using System;
@@ -54,7 +54,7 @@ namespace QREntry.WebAPI
             b => b.MigrationsAssembly("QREntry.DataAccess")));
 
             //EF In-Memory
-            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
+            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
 
             //DI
             services.AddSingleton(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
@@ -63,6 +63,7 @@ namespace QREntry.WebAPI
 
 
             var appSettings = Configuration.GetSection("AppSettings");
+            
             services.Configure<AppSettings>(appSettings);
 
             var constants = Configuration.GetSection("Constants");
@@ -92,7 +93,7 @@ namespace QREntry.WebAPI
             //Swagger API
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = Configuration.GetSection("MySettings")["AppName"] + " API ", Version = Configuration.GetSection("MySettings")["Version"] });
+                c.SwaggerDoc("v1", new Info { Title = appSettings["AppName"] + " API ", Version = appSettings["Version"] });
             });
 
 
@@ -197,7 +198,7 @@ namespace QREntry.WebAPI
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", Configuration.GetSection("MySettings")["AppName"] + " API " + Configuration.GetSection("MySettings")["Version"]);
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", Configuration.GetSection("AppSettings")["AppName"] + " API " + Configuration.GetSection("AppSettings")["Version"]);
             });
 
             //Configure Log

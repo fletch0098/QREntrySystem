@@ -1,6 +1,8 @@
 {
-  "Constants": {
+  "AppSettings": {
     "AppTitle": "QR Entry System",
     "Version": "1.0"
+  },
+  "Constants": {
   }
 }  
