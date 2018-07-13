@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Globals } from './globals';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -35,6 +37,8 @@ import { UserService } from './account/user.service';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
 
 
   ],

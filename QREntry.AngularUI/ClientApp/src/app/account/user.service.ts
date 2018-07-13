@@ -32,7 +32,8 @@ export class UserService {
       LastName: user.LastName
     }
 
-    return this.http.post<number>(this.appSetting.apiUrl + 'api/Accounts/', body, httpOptions);
+    return this.http.post(this.appSetting.apiUrl + 'api/Accounts/', body, httpOptions)
+      .map(res => true);
 
    // return this.http.post(this.appSetting.apiUrl + 'api/Accounts/', body);
   }
