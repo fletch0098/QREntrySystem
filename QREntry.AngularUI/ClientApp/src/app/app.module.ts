@@ -19,6 +19,10 @@ import { MessagesComponent } from './messages/messages.component';
 import { FooterComponent } from './footer/footer.component';
 import { SignUpComponent } from './account/sign-up/sign-up.component';
 import { UserService } from './account/user.service';
+import { BaseService } from './shared/base.service';
+import { ConfigService } from './shared/config.service';
+import { LoginFormComponent } from './account/login-form/login-form.component';
+import { LoginComponent } from './account/login/login.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +35,8 @@ import { UserService } from './account/user.service';
     FooterComponent,
     AppSettingsComponent,
     SignUpComponent,
+    LoginFormComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -42,7 +48,7 @@ import { UserService } from './account/user.service';
 
 
   ],
-  providers: [MessageService, Globals, UserService],
+  providers: [MessageService, Globals, UserService, ConfigService],
   bootstrap: [AppComponent]
 })
 
