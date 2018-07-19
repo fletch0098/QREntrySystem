@@ -10,7 +10,7 @@ import { ConfigService } from '../shared/config.service';
 import { UserRegistration } from '../shared/models/user-registration';
 
 // Add the RxJS Observable operators we need in this app.
-import '../../rxjs-operators';
+import '../rxjs-operators';
 
 import { User } from './user.model';
 
