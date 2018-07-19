@@ -10,6 +10,7 @@ import { AppSettingsComponent } from './app-settings/app-settings.component';
 import { MessageService } from './messages/message.service';
 import { MessagesComponent } from './messages/messages.component';
 import { SignUpComponent } from './account/sign-up/sign-up.component';
+import { LoginFormComponent } from './account/login-form/login-form.component';
 
 import { ComputerManagementComponent } from './computer-management/computer-management.component';
 
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
+  { path: 'login', component: LoginFormComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'app-settings', component: AppSettingsComponent },
   { path: 'view-logs', component: MessagesComponent },

@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Credentials } from '../credentials.model';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { UserService } from '../user.service';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
+import { Credentials } from '../../shared/models/credentials';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login-form',
@@ -11,36 +11,47 @@ import { UserService } from '../user.service';
   styleUrls: ['./login-form.component.css']
 })
 
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent implements OnInit, OnDestroy {
 
-  @Input() model: Credentials;
+  private subscription: Subscription;
 
-  submitted = false;
+  brandNew: boolean;
+  errors: string;
+  isRequesting: boolean;
+  submitted: boolean = false;
+  credentials: Credentials = { email: '', password: '' };
 
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private location: Location
-  ) { }
+  constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    
+
+    // subscribe to router event
+    this.subscription = this.activatedRoute.queryParams.subscribe(
+      (param: any) => {
+        this.brandNew = param['brandNew'];
+        this.credentials.email = param['email'];
+      });
   }
 
-  onSubmit() {
-
-    console.log(this.model.Email);
-    console.log(this.model);
-
-    //this.userService.addComputer(this.model)
-    //    .subscribe(() => this.goBack());
+  ngOnDestroy() {
+    // prevent memory leak by unsubscribing
+    this.subscription.unsubscribe();
   }
 
-  // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.model); }
-
-  goBack(): void {
-    this.location.back();
+  login({ value, valid }: { value: Credentials, valid: boolean }) {
+    this.submitted = true;
+    this.isRequesting = true;
+    this.errors = '';
+    if (valid) {
+      this.userService.login(value.email, value.password)
+        .finally(() => this.isRequesting = false)
+        .subscribe(
+          result => {
+            if (result) {
+              this.router.navigate(['/dashboard/home']);
+            }
+          },
+          error => this.errors = error);
+    }
   }
-
 }

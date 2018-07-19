@@ -1,5 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { appSetting } from '../shared/models/app-settings';
+import { ConfigService } from '../shared/config.service';
 
 @Component({
   selector: 'app-app-settings',
@@ -11,19 +13,7 @@ export class AppSettingsComponent {
 
   appSetting: appSetting;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<appSetting>(baseUrl + 'api/appSetting/getAppSettings').subscribe(result => {
-      this.appSetting = result;
-
-    }, error => console.error(error));
+  constructor(private configService: ConfigService ) {
+    this.appSetting = configService.getAppSettings();
   }
-}
-
-interface appSetting {
-  enviroment: string;
-  appName: string;
-  url: string;
-  apiUrl: string;
-  appTitle: string;
-  version: string;
 }

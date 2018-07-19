@@ -4,18 +4,15 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/Rx';
+// Add the RxJS Observable operators we need in this app.
+import '../rxjs-operators';
+import { of } from 'rxjs/observable/of';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { BaseService } from "../shared/base.service";
 import { ConfigService } from '../shared/config.service';
 import { UserRegistration } from '../shared/models/user-registration';
-
-// Add the RxJS Observable operators we need in this app.
-import '../rxjs-operators';
-
 import { User } from './user.model';
-
-import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -24,8 +21,6 @@ const httpOptions = {
 @Injectable()
 
 export class UserService extends BaseService {
-  readonly rootUrl = 'http://localhost:50446/';
-  appSetting: appSetting;
 
   // Observable navItem source
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
@@ -35,23 +30,24 @@ export class UserService extends BaseService {
   private loggedIn = false;
   private baseUrl: string;
 
-  constructor(private httpClient: HttpClient, private http: Http, @Inject('BASE_URL') baseUrl: string, private configService: ConfigService) {
+  constructor(
+      private httpClient: HttpClient,
+      private http: Http,
+      private configService: ConfigService) {
+
     super();
-
-    httpClient.get<appSetting>(baseUrl + 'api/appSetting/getAppSettings').subscribe(result => {
-      this.appSetting = result;
-    }, error => console.error(error));
-
     
     this.loggedIn = !!localStorage.getItem('auth_token');
     // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
     // header component resulting in authed user nav links disappearing despite the fact user is still logged in
     this._authNavStatusSource.next(this.loggedIn);
-    this.baseUrl = configService.getWebApiURL();
+    this.baseUrl = configService.getApiURI();
 
 }
 
+  //MyRegister
   registerUser(user: User) {
+
     const body: User = {
       Location: user.Location,
       Password: user.Password,
@@ -60,11 +56,11 @@ export class UserService extends BaseService {
       LastName: user.LastName
     }
 
-    return this.httpClient.post(this.appSetting.apiUrl + 'api/Accounts/', body, httpOptions)
+    return this.httpClient.post(this.baseUrl + '/Accounts/', body, httpOptions)
       .map(res => true);
   }
 
-    register(email: string, password: string, firstName: string, lastName: string, location: string): Observable<UserRegistration> {
+  register(email: string, password: string, firstName: string, lastName: string, location: string): Observable<UserRegistration> {
     let body = JSON.stringify({ email, password, firstName, lastName, location });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -120,13 +116,4 @@ export class UserService extends BaseService {
       .catch(this.handleError);
   }
 
-}
-
-interface appSetting {
-  enviroment: string;
-  appName: string;
-  url: string;
-  apiUrl: string;
-  appTitle: string;
-  version: string;
 }

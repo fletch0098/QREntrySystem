@@ -1,75 +1,42 @@
-<div *ngIf="model">
-
-  <h1>Sign Up</h1>
-
-  <form (ngSubmit)="onSubmit()" #signUpForm="ngForm">
-    <!--{{diagnostic}}-->
-    <!--<div><label for="Email">Email: </label> <span>{{model.Email}}</span></div>
-  <div> <label for="FirstName: ">FirstName:</label> <span>{{model.FirstName}}</span></div>-->
-
-    <div class="form-group">
-
-      <!--<label for="computerId">Id</label>
-    <input type="text" placeholder="Id" class="form-control" id="computerId"
-           [(ngModel)]="model.computerId" name="computerId" readonly>-->
-
-    </div>
-
-
-    <div class="form-group">
-      <label for="Email">Email</label>
-      <input type="text" placeholder="brother.bob@123.com" class="form-control" id="Email" required
-             [(ngModel)]="model.Email" name="Email">
-      <!--<div [hidden]="configuracionName.valid || configuracionName.pristine"
-         class="alert alert-danger">
-      configuracionName is required
-    </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="Password">Password</label>
-      <input type="text" placeholder="*******" class="form-control" id="Password" required
-             [(ngModel)]="model.Password" name="Password">
-      <!--<div [hidden]="processor.valid || processor.pristine"
-         class="alert alert-danger">
-      processor is required
-    </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="FirstName">FirstName</label>
-      <input type="text" placeholder="brother" class="form-control" id="FirstName" required
-             [(ngModel)]="model.FirstName" name="FirstName">
-      <!--<div [hidden]="hardDrive.valid || hardDrive.pristine"
-         class="alert alert-danger">
-      hardDrive is required
-    </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="LastName">LastName</label>
-      <input type="text" placeholder="bob" class="form-control" id="LastName" required
-             [(ngModel)]="model.LastName" name="LastName">
-      <!--<div [hidden]="hardDrive.valid || hardDrive.pristine"
-         class="alert alert-danger">
-      hardDrive is required
-    </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="Location">Location</label>
-      <input type="text" placeholder="hell" class="form-control" id="Location" required
-             [(ngModel)]="model.Location" name="Location">
-      <!--<div [hidden]="hardDrive.valid || hardDrive.pristine"
-         class="alert alert-danger">
-      hardDrive is required
-    </div>-->
-    </div>
-
-
-    <button type="submit" class="btn btn-success" [disabled]="!signUpForm.form.valid">Save</button>
-    <button type="button" class="btn btn-danger" (click)="goBack()">Cancel</button>
-
-  </form>
-
+<div class="row">
+  <div class="col-md-6">
+    <h2>Please enter your information</h2>
+  </div>
 </div>
+<div class="row">
+  <div class="col-md-6">
+    <form #f="ngForm" novalidate (ngSubmit)="registerUser(f)">
+      <div class="form-group">
+        <label for="first-name">First name</label>
+        <input type="text" class="form-control" id="first-name" placeholder="First name" name="firstName" tmFocus ngModel>
+      </div>
+      <div class="form-group">
+        <label for="last-name">Last name</label>
+        <input type="text" class="form-control" id="last-name" placeholder="Last name" name="lastName" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" required name="email" validateEmail class="form-control" placeholder="Email" ngModel #email="ngModel">
+        <small [hidden]="email.valid || (email.pristine && !submitted)" class="text-danger">Please enter a valid email</small>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" class="form-control" id="location" placeholder="Location" required name="location" ngModel>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid || isRequesting">Sign Up</button>
+        <!--<app-spinner [isRunning]="isRequesting"></app-spinner>-->
+      </div>
+      <div *ngIf="errors" class="alert alert-danger" role="alert">
+        <strong>Oops!</strong> {{errors}}
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
