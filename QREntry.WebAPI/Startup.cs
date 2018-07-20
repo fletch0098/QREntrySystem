@@ -50,11 +50,11 @@ namespace QREntry.WebAPI
             //Add framework services.
 
             //EF DB
-            services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            b => b.MigrationsAssembly("QREntry.DataAccess")));
+            //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //b => b.MigrationsAssembly("QREntry.DataAccess")));
 
             //EF In-Memory
-            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
+            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("QREntryApp"));
 
             //DI
             services.AddSingleton(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
@@ -73,7 +73,7 @@ namespace QREntry.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("LocalDev",
-                    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+                    policy => policy.WithOrigins("https://localhost:44311").AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithExposedHeaders());
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -167,7 +167,14 @@ namespace QREntry.WebAPI
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.ApiAccess));
             });
 
-        }
+            //services.AddHttpsRedirection(options =>
+            //{
+            //    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            //    options.HttpsPort = 5001;
+            //});
+        
+
+    }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

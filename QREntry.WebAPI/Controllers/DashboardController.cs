@@ -10,10 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace AngularASPNETCore2WebApiAuth.Controllers
+namespace QREntry.WebAPI.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
+
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class DashboardController : Controller
@@ -34,18 +33,18 @@ namespace AngularASPNETCore2WebApiAuth.Controllers
             // retrieve the user info
             //HttpContext.User
             var userId = _caller.Claims.Single(c => c.Type == "id");
-            var customer = await _appDbContext.People.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
+            Person person = await _appDbContext.People.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
 
             return new OkObjectResult(new
             {
                 Message = "This is secure API and user data!",
-                customer.Identity.FirstName,
-                customer.Identity.LastName,
-                customer.Identity.PictureUrl,
-                customer.Identity.FacebookId,
-                customer.Location,
-                customer.Locale,
-                customer.Gender
+                person.Identity.FirstName,
+                person.Identity.LastName,
+                person.Identity.PictureUrl,
+                person.Identity.FacebookId,
+                person.Location,
+                person.Locale,
+                person.Gender
             });
         }
     }

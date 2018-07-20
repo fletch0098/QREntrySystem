@@ -5,7 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Globals } from './globals';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpModule } from '@angular/http'
+import { HttpModule, XHRBackend } from '@angular/http';
+import { AuthenticateXHRBackend } from './authenticate-xhr.backend';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -23,6 +24,10 @@ import { BaseService } from './shared/base.service';
 import { ConfigService } from './shared/config.service';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { LoginComponent } from './account/login/login.component';
+import { EmailValidator } from './directives/email.validator.directive';
+
+/* Dashboard Imports */
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -37,10 +42,12 @@ import { LoginComponent } from './account/login/login.component';
     SignUpComponent,
     LoginFormComponent,
     LoginComponent,
+    EmailValidator
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    DashboardModule,
     HttpModule,
 
     FormsModule,
@@ -49,7 +56,10 @@ import { LoginComponent } from './account/login/login.component';
 
 
   ],
-  providers: [MessageService, Globals, UserService, ConfigService],
+  providers: [MessageService, Globals, UserService, ConfigService, {
+    provide: XHRBackend,
+    useClass: AuthenticateXHRBackend
+  }],
   bootstrap: [AppComponent]
 })
 
