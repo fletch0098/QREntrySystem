@@ -29,9 +29,9 @@ export class DashboardService extends BaseService {
 
     let headers = new Headers({ 'Content-Type': 'application/json' });
     
+    let authToken = localStorage.getItem('auth_token');
+    headers.append('Authorization', `Bearer ${authToken}`);
 
-    //  let authToken = localStorage.getItem('auth_token');
-    //headers.append('Authorization', `Bearer ${authToken}`);
     let options = new RequestOptions({ headers: headers });
 
     console.log('getHomeDetails');

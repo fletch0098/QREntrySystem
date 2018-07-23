@@ -47,8 +47,6 @@ namespace QREntry.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Add framework services.
-
             //EF DB
             //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             //b => b.MigrationsAssembly("QREntry.DataAccess")));
@@ -61,11 +59,11 @@ namespace QREntry.WebAPI
             services.AddTransient(typeof(IDataRepository<ControlledEntry, int>), typeof(ControlledEntryManager));
             services.AddTransient<DbInitializer>();
 
-
+            //AppSettings
             var appSettings = Configuration.GetSection("AppSettings");
-            
             services.Configure<AppSettings>(appSettings);
-
+            
+            //Constants
             var constants = Configuration.GetSection("Constants");
             services.Configure<Constants>(constants);
 
@@ -73,8 +71,35 @@ namespace QREntry.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("LocalDev",
-                    policy => policy.WithOrigins("https://localhost:44311").AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithExposedHeaders());
+                    policy => policy.WithOrigins("https://localhost:44311").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials());
             });
+
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicyLocal",
+            //CORSbuilder =>
+            //{
+            //    CORSbuilder.AllowAnyMethod().AllowAnyHeader()
+            //           .WithOrigins()
+            //           .AllowCredentials();
+            //});
+
+            //});
+
+
+            //MVC With Options
+            //services.AddMvc(options =>
+            //{
+            //    options.Filters.Add(new CorsAuthorizationFilterFactory("LocalDev"));
+            //});
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalDev"));
+            });
+
+
+            //END CORS
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -84,11 +109,6 @@ namespace QREntry.WebAPI
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-            //MVC With Options
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalDev"));
-            });
 
             //Swagger API
             services.AddSwaggerGen(c =>
@@ -188,6 +208,9 @@ namespace QREntry.WebAPI
                 app.UseHsts();
             }
 
+            // Shows UseCors with named policy.
+            app.UseCors("LocalDev");
+
             app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
@@ -202,7 +225,6 @@ namespace QREntry.WebAPI
             {
                 c.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value);
             });
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", Configuration.GetSection("AppSettings")["AppName"] + " API " + Configuration.GetSection("AppSettings")["Version"]);
@@ -212,23 +234,21 @@ namespace QREntry.WebAPI
             env.ConfigureNLog("nlog.config");
 
             //Authentication
-            app.UseExceptionHandler(
-    builder =>
-    {
-        builder.Run(
-                        async context =>
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
-                    var error = context.Features.Get<IExceptionHandlerFeature>();
-                    if (error != null)
+            app.UseExceptionHandler(builder => {
+                builder.Run(
+                    async context =>
                     {
-                        context.Response.AddApplicationError(error.Error.Message);
-                        await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
-                    }
-                });
-    });
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                        }
+                    });
+            });
 
             app.UseAuthentication();
             app.UseDefaultFiles();

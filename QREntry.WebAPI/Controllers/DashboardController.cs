@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QREntry.WebAPI.Controllers
 {
-
+    //[Authorize(Policy = "ApiUser")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class DashboardController : Controller
