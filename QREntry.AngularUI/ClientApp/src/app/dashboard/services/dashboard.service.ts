@@ -35,8 +35,7 @@ export class DashboardService extends BaseService {
 
     let options = new RequestOptions({ headers: headers });
 
-    console.log('getHomeDetails');
-
+    console.log('getHomeDetails')
     console.log(this.baseUrl + '/dashboard/home');
     console.log(options);
 

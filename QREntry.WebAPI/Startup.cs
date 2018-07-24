@@ -70,39 +70,18 @@ namespace QREntry.WebAPI
             //CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("LocalWorkDev",
-                    policy => policy.WithOrigins("https://localhost:44311").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials().Build());
+                options.AddPolicy("LocalDev",
+                    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build());
 
-                options.AddPolicy("LocalHomeDev",
+                options.AddPolicy("AzureProd",
                     policy => policy.WithOrigins("https://localhost:44363").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials().Build());
             });
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicyLocal",
-            //CORSbuilder =>
-            //{
-            //    CORSbuilder.AllowAnyMethod().AllowAnyHeader()
-            //           .WithOrigins()
-            //           .AllowCredentials();
-            //});
-
-            //});
-
-
-            //MVC With Options
-            //services.AddMvc(options =>
-            //{
-            //    options.Filters.Add(new CorsAuthorizationFilterFactory("LocalDev"));
-            //});
             services.Configure<MvcOptions>(options =>
             {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalWorkDev"));
+                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalDev"));
             });
-
-
             //END CORS
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -112,13 +91,11 @@ namespace QREntry.WebAPI
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-
             //Swagger API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = appSettings["AppName"] + " API ", Version = appSettings["Version"] });
             });
-
 
             //Authtntication
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
@@ -137,6 +114,7 @@ namespace QREntry.WebAPI
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<MyAppContext>().AddDefaultTokenProviders();
 
+            //Mapping
             services.AddAutoMapper();
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
@@ -163,7 +141,7 @@ namespace QREntry.WebAPI
                 IssuerSigningKey = _signingKey,
 
                 RequireExpirationTime = false,
-                ValidateLifetime = true,
+                ValidateLifetime = false,
                 ClockSkew = TimeSpan.Zero
             };
 
@@ -182,15 +160,7 @@ namespace QREntry.WebAPI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.ApiAccess));
-            });
-
-            //services.AddHttpsRedirection(options =>
-            //{
-            //    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-            //    options.HttpsPort = 5001;
-            //});
-        
-
+            });    
     }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -205,8 +175,12 @@ namespace QREntry.WebAPI
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             // Shows UseCors with named policy.
-            app.UseCors("LocalWorkDev");
+            app.UseCors("LocalDev");
 
             app.UseHttpsRedirection();
 
@@ -246,11 +220,6 @@ namespace QREntry.WebAPI
                         }
                     });
             });
-
-            app.UseAuthentication();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-            app.UseMvc();
 
         }
     }

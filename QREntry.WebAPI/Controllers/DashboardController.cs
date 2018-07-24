@@ -12,20 +12,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QREntry.WebAPI.Controllers
 {
-    //[Authorize(Policy = "ApiUser")]
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class DashboardController : Controller
     {
         private readonly ClaimsPrincipal _caller;
         private readonly MyAppContext _appDbContext;
-        private IHttpContextAccessor _httpContextAccessor;
 
         public DashboardController(UserManager<AppUser> userManager, MyAppContext appDbContext, IHttpContextAccessor httpContextAccessor)
         {
             _caller = httpContextAccessor.HttpContext.User;
             _appDbContext = appDbContext;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET api/dashboard/home
@@ -33,27 +31,19 @@ namespace QREntry.WebAPI.Controllers
         public async Task<IActionResult> Home()
         {
             // retrieve the user info
-            //HttpContext.User
-            // var userId = _caller.Claims.Single(c => c.Type == "id");
-
-            var me = _httpContextAccessor;
-
-
-
-            //Person person = await _appDbContext.People.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
-
+            var userId = _caller.Claims.Single(c => c.Type == "id");
+            Person person = await _appDbContext.People.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
 
             return new OkObjectResult(new
             {
                 Message = "This is secure API and user data!",
-
-                //person.Identity.FirstName,
-                //person.Identity.LastName,
-                //person.Identity.PictureUrl,
-                //person.Identity.FacebookId,
-                //person.Location,
-                //person.Locale,
-                //person.Gender
+                person.Identity.FirstName,
+                person.Identity.LastName,
+                person.Identity.PictureUrl,
+                person.Identity.FacebookId,
+                person.Location,
+                person.Locale,
+                person.Gender
             });
         }
     }
