@@ -27,17 +27,18 @@ export class DashboardService extends BaseService {
       //let headers = new Headers();
       //headers.append('Content-Type', 'application/json');
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers();
     
     let authToken = localStorage.getItem('auth_token');
     headers.append('Authorization', `Bearer ${authToken}`);
+    headers.append('Content-Type', `application/json`);
 
     let options = new RequestOptions({ headers: headers });
 
     console.log('getHomeDetails');
 
     console.log(this.baseUrl + '/dashboard/home');
-    //console.log(authToken);
+    console.log(authToken);
 
     return this.http.get(this.baseUrl + "/dashboard/home",options)
       .map(response => response.json())

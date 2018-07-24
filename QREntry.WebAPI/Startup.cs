@@ -70,8 +70,11 @@ namespace QREntry.WebAPI
             //CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("LocalDev",
+                options.AddPolicy("LocalWorkDev",
                     policy => policy.WithOrigins("https://localhost:44311").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials());
+
+                options.AddPolicy("LocalHomeDev",
+                    policy => policy.WithOrigins("https://localhost:44363").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials());
             });
 
             //services.AddCors(options =>
@@ -94,7 +97,7 @@ namespace QREntry.WebAPI
             //});
             services.Configure<MvcOptions>(options =>
             {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalDev"));
+                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalHomeDev"));
             });
 
 
@@ -120,12 +123,6 @@ namespace QREntry.WebAPI
             //Authtntication
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
-
-            // api user claim policy
-            services.AddAuthorization(options =>
-            {
-                //options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
-            });
 
             // add identity
             var builder = services.AddIdentityCore<AppUser>(o =>
@@ -156,13 +153,13 @@ namespace QREntry.WebAPI
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
+                ValidateIssuer = false,
                 ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
-                ValidateAudience = true,
+                ValidateAudience = false,
                 ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
 
-                ValidateIssuerSigningKey = true,
+                ValidateIssuerSigningKey = false,
                 IssuerSigningKey = _signingKey,
 
                 RequireExpirationTime = false,
@@ -209,7 +206,7 @@ namespace QREntry.WebAPI
             }
 
             // Shows UseCors with named policy.
-            app.UseCors("LocalDev");
+            app.UseCors("LocalHomeDev");
 
             app.UseHttpsRedirection();
 
