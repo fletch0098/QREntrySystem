@@ -71,10 +71,10 @@ namespace QREntry.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("LocalWorkDev",
-                    policy => policy.WithOrigins("https://localhost:44311").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials());
+                    policy => policy.WithOrigins("https://localhost:44311").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials().Build());
 
                 options.AddPolicy("LocalHomeDev",
-                    policy => policy.WithOrigins("https://localhost:44363").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials());
+                    policy => policy.WithOrigins("https://localhost:44363").WithHeaders("Content-Type", "Authorization").AllowAnyMethod().AllowCredentials().Build());
             });
 
             //services.AddCors(options =>
@@ -97,7 +97,7 @@ namespace QREntry.WebAPI
             //});
             services.Configure<MvcOptions>(options =>
             {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalHomeDev"));
+                options.Filters.Add(new CorsAuthorizationFilterFactory("LocalWorkDev"));
             });
 
 
@@ -206,7 +206,7 @@ namespace QREntry.WebAPI
             }
 
             // Shows UseCors with named policy.
-            app.UseCors("LocalHomeDev");
+            app.UseCors("LocalWorkDev");
 
             app.UseHttpsRedirection();
 

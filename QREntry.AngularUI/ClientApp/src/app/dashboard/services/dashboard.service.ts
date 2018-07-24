@@ -38,7 +38,7 @@ export class DashboardService extends BaseService {
     console.log('getHomeDetails');
 
     console.log(this.baseUrl + '/dashboard/home');
-    console.log(authToken);
+    console.log(options);
 
     return this.http.get(this.baseUrl + "/dashboard/home",options)
       .map(response => response.json())
