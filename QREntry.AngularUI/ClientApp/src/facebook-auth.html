@@ -12,7 +12,9 @@
       // if we don't receive an access token then login failed and/or the user has not connected properly
       var accessToken = getParameterByName("access_token");
       var message = {};
-      if (accessToken) {
+    if (accessToken) {
+      console.log('facebook-auth success');
+      console.log(accessToken);
         message.status = true;
         message.accessToken = accessToken;
       }
@@ -22,7 +24,7 @@
         message.error = getParameterByName("error");
         message.errorDescription = getParameterByName("error_description");
       }
-    window.opener.postMessage(JSON.stringify(message), "https://localhost:44363");
+    window.opener.postMessage(JSON.stringify(message), "https://localhost:44311");
   </script>
   </body>
 </html>

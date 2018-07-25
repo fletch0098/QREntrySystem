@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,12 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-//using AngularASPNETCore2WebApiAuth.Data;
-//using AngularASPNETCore2WebApiAuth.Helpers;
-//using AngularASPNETCore2WebApiAuth.Models;
-//using AngularASPNETCore2WebApiAuth.Models.Entities;
-//using AngularASPNETCore2WebApiAuth.ViewModels;
-
 
 namespace QREntry.WebAPI.Controllers
 {
@@ -49,7 +41,7 @@ namespace QREntry.WebAPI.Controllers
       var appAccessTokenResponse = await Client.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={_fbAuthSettings.AppId}&client_secret={_fbAuthSettings.AppSecret}&grant_type=client_credentials");
       var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(appAccessTokenResponse);
       // 2. validate the user access token
-      var userAccessTokenValidationResponse = await Client.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={model.AccessToken}&access_token={appAccessToken.AccessToken}");
+      var userAccessTokenValidationResponse = await Client.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={model.accessToken}&access_token={appAccessToken.AccessToken}");
       var userAccessTokenValidation = JsonConvert.DeserializeObject<FacebookUserAccessTokenValidation>(userAccessTokenValidationResponse);
 
       if (!userAccessTokenValidation.Data.IsValid)
@@ -58,7 +50,7 @@ namespace QREntry.WebAPI.Controllers
       }
 
       // 3. we've got a valid token so we can request user data from fb
-      var userInfoResponse = await Client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={model.AccessToken}");
+      var userInfoResponse = await Client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={model.accessToken}");
       var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
 
       // 4. ready to create the local user account (if necessary) and jwt

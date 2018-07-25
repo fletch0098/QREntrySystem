@@ -106,11 +106,13 @@ export class UserService extends BaseService {
     headers.append('Content-Type', 'application/json');
     let body = JSON.stringify({ accessToken });
     console.log('Facebook Login');
-    console.log(this.baseUrl + '/externalauth/facebook');
+    console.log(this.baseUrl + '/externalauth');
     console.log(accessToken);
+    console.log(body);
+    console.log(headers);
     return this.http
       .post(
-        this.baseUrl + '/externalauth/facebook', body, { headers })
+        this.baseUrl + '/externalauth', body, { headers })
       .map(res => res.json())
       .map(res => {
         console.log('Login Success');
