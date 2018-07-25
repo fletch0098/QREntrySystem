@@ -25,6 +25,7 @@ import { ConfigService } from './shared/config.service';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { LoginComponent } from './account/login/login.component';
 import { EmailValidator } from './directives/email.validator.directive';
+import {FacebookLoginComponent } from './account/facebook-login/facebook-login.component';
 
 /* Dashboard Imports */
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -42,7 +43,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     SignUpComponent,
     LoginFormComponent,
     LoginComponent,
-    EmailValidator
+    EmailValidator,
+    FacebookLoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

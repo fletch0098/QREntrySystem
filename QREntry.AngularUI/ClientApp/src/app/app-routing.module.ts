@@ -11,6 +11,7 @@ import { MessageService } from './messages/message.service';
 import { MessagesComponent } from './messages/messages.component';
 import { SignUpComponent } from './account/sign-up/sign-up.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
+import {FacebookLoginComponent  } from './account/facebook-login/facebook-login.component';
 
 import { ComputerManagementComponent } from './computer-management/computer-management.component';
 
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'app-settings', component: AppSettingsComponent },
   { path: 'view-logs', component: MessagesComponent },
+  { path: 'facebook-login', component: FacebookLoginComponent },
   { path: 'computer-management', loadChildren: 'app/computer-management/computer-management.module#ComputerManagementModule', }
 ];
 
