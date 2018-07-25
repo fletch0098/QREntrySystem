@@ -18,8 +18,6 @@ using Microsoft.Extensions.Options;
 using QREntry.WebAPI.Authentication;
 using System.Net;
 using System;
-
-
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -12,6 +12,10 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.2.4" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Common\CommonSettings.Development.json">
+      <TransformOnBuild>true</TransformOnBuild>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Common\CommonSettings.json">
       <TransformOnBuild>true</TransformOnBuild>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

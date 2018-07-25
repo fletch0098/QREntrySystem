@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -30,6 +30,12 @@ import {FacebookLoginComponent } from './account/facebook-login/facebook-login.c
 /* Dashboard Imports */
 import { DashboardModule } from './dashboard/dashboard.module';
 
+const appInitializerFn = (appConfig: ConfigService) => {
+  return () => {
+    return appConfig.loadConfig();
+  };
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +64,13 @@ import { DashboardModule } from './dashboard/dashboard.module';
 
 
   ],
-  providers: [MessageService, Globals, UserService, ConfigService, {
+  providers: [MessageService, Globals, UserService, ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [ConfigService]
+    }, {
     provide: XHRBackend,
     useClass: AuthenticateXHRBackend
   }],

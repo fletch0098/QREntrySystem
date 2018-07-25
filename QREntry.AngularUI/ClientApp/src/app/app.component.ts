@@ -9,7 +9,7 @@ import { ConfigService } from './shared/config.service';
 export class AppComponent {
   title = '';
 
-  constructor(private configService: ConfigService) {
+  constructor(/*private configService: ConfigService*/) {
     
   }
 
